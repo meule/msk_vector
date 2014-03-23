@@ -95,8 +95,7 @@ function zoomed() {
               .data(json.features)
             .enter().append("path")
              //.attr("style", function(d) { return "stroke-width: " + d.properties.strahler/2 + "px;" })
-              .attr("d", function(d) { return tilePath(d); })
-		.attr("building",function(d) { return d.building; });
+              .attr("d", function(d) { return tilePath(d); });
         });
       });
 }
