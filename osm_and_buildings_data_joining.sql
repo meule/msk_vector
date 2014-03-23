@@ -31,6 +31,7 @@ SELECT moscow_buildings.osm_id,data.address,moscow_buildings.housenum
 FROM moscow_buildings
 INNER JOIN data ON ST_DWithin(data.geom4, moscow_buildings.way,5);
 
+-- researching
 
 ALTER TABLE bd_st_Dwithin5
 ADD COLUMN housenum_osm varchar;
@@ -51,8 +52,30 @@ INNER JOIN bd_st_Dwithin5 as bd2
 ON bd_st_Dwithin5.housenum_data=bd2.housenum_osm
 WHERE bd_st_Dwithin5.address!=bd2.address and bd_st_Dwithin5.osm_id=bd2.osm_id;
 
+create table data_with_distance3 as
+select data.geom4 from data
+inner join data as data2
+on ST_Distance(data.geom4,data2.geom4)<3
+where data.address!=data2.address;
+
+create table data_with_distance3_plus_address_year as
+select  data_with_distance3_plus_address.geom4,data_with_distance3_plus_address.address,data.year from data_with_distance3_plus_address
+inner join data
+on data_with_distance3_plus_address.geom4=data.geom4;
 
 
+create table data_same  as
+select  data_with_distance3_plus_address_year.geom4,data.geom4 as geom4_neightboor from data_with_distance3_plus_address_year
+inner join data
+on data_with_distance3_plus_address_year.geom4=data.geom4
+where data.year=data_with_distance3_plus_address_year.year;
+
+
+
+
+create table msk as select ogc_fid,address,year,ST_Transform(ST_SetSRID(wkb_geometry),900913) from ogrgeojson;
+
+-- end researching
 
 CREATE TABLE moscow_roads AS
 SELECT osm_id,highway,name,way FROM planet_osm_line
