@@ -75,6 +75,8 @@ where data.year=data_with_distance3_plus_address_year.year;
 
 create table msk as select ogc_fid,address,year,ST_Transform(ST_SetSRID(wkb_geometry),900913) from ogrgeojson;
 
+create table msk_grouped as SELECT bd.year, ST_Union(bd.geom) as geom FROM msk As bd GROUP BY bd.year;
+	
 -- end researching
 
 CREATE TABLE moscow_roads AS
