@@ -37,7 +37,7 @@ var tile = d3.geo.tile()
     .size([width, height]);
 
 var projection = d3.geo.mercator()
-    .scale((1 << 21) / 2 / Math.PI)
+    .scale((1 << 20) / 2 / Math.PI)
     .translate([-width / 2, -height / 2]); // just temporary
 
 var tileProjection = d3.geo.mercator();
