@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0"/>
+   
+  <title>Leaflet vector tile map of rivers</title>
+   
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+  <![endif]-->
+  <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+  <script src="http://www.somebits.com/rivers/lib/leaflet-hash.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  \ 
+  <style type="text/css">
+  html, body { height: 100% }
+  #map { min-height: 100%; }
+  body {
+      margin: 0;
+      font-family: Helvetica, Arial, sans-serif; font-size: 12px;
+      overflow: hidden;
+      background-color: #f00;
+  }
+  .leaflet-popup-content-wrapper {
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+  }
+   
+  path { stroke-linejoin; round; stroke-linecap: round; fill: #444}
+   
+  </style>
+   
+  </head><body>
+ 
+<div id="map"></div>
+ 
+<script type="text/javascript">
+ 
+L.TileLayer.d3_topoJSON =  L.TileLayer.extend({
+    onAdd : function(map) {
+        L.TileLayer.prototype.onAdd.call(this,map);
+        this._path = d3.geo.path().projection(function(d) {
+            var point = map.latLngToLayerPoint(new L.LatLng(d[1],d[0]));
+            return [point.x,point.y];
+        });
+        this.on("tileunload",function(d) {
+            if (d.tile.xhr) d.tile.xhr.abort();
+            if (d.tile.nodes) d.tile.nodes.remove();
+            d.tile.nodes = null;
+            d.tile.xhr = null;
+        });
+    },
+    _loadTile : function(tile,tilePoint) {
+        var self = this;
+        this._adjustTilePoint(tilePoint);
+ 
+        if (!tile.nodes && !tile.xhr) {
+            tile.xhr = d3.json(this.getTileUrl(tilePoint),function(error, tjData) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    var geoJson = topojson.feature(tjData, tjData.objects[self.options.layerName]);
+                    tile.xhr = null;
+                    tile.nodes = d3.select(map._container).select("svg").append("g");
+                    tile.nodes.selectAll("path")
+                        .data(geoJson.features).enter()
+                      .append("path")
+                        .attr("d", self._path)
+                        .attr("class", self.options.class)
+                        .attr("style", self.options.style);
+                }
+            });
+        }
+    }
+});
+
+// Construct map, center if no location provided
+var map = L.map('map', { minZoom: 7, maxZoom: 15 } );
+ 
+var hash = new L.Hash(map);
+if (!window.location.hash) {
+    map.setView([37.6, 55.75], 10);
+}
+ 
+/* 
+// Make the base map; a raster tile relief map from ESRI
+var esriRelief = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}'
+var basemap = L.tileLayer(esriRelief, {
+        attribution: '<a href="http://www.arcgis.com/home/item.html?id=9c5370d0b54f4de1b48a3792d7377ff2">ESRI shaded relief</a>, <a href="http://www.horizon-systems.com/NHDPlus/NHDPlusV2_home.php">NHDPlus v2</a>, OpenStreetMap',
+        maxZoom: 13
+});
+basemap.addTo(map);
+ 
+*/
+
+// Add a fake GeoJSON line to coerce Leaflet into creating the <svg> tag that d3_geoJson needs
+new L.geoJson({"type": "LineString","coordinates":[[0,0],[0,0]]}).addTo(map);
+ 
+
+
+new L.TileLayer.d3_topoJSON("http://54.72.102.212:8001/moscow/{z}/{x}/{y}.topojson", {
+  class: "building",
+  layerName: "vectile",
+  style: ""
+}).addTo(map);
+
+
+// Land use areas from OpenStreetMap
+/*
+function rando(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+new L.TileLayer.d3_topoJSON("http://tile.openstreetmap.us/vectiles-land-usages/{z}/{x}/{y}.topojson", {
+  class: "landuse",
+  layerName: "vectile",
+  style: function(d) {
+    var c = landColors[d.properties.kind];
+    if (!c) { c = "#fff"; }
+    if (c == 1) {    // random greens
+      c = "hsl(" + rando(100, 130) + ", " + rando(50,70) + "%, " + rando(30, 50) + "%)";
+    }
+    return "fill: " + c;
+  }
+}).addTo(map);
+ 
+// Water Areas from OpenStreetMap
+new L.TileLayer.d3_topoJSON("http://tile.openstreetmap.us/vectiles-water-areas/{z}/{x}/{y}.topojson", {
+  class: "water",
+  layerName: "vectile",
+  style: ""
+}).addTo(map);
+ 
+// Highways from OpenStreetMap
+var roadSizes = {
+  "highway": "5px",
+  "major_road": "3px",
+  "minor_road": "1px",
+  "rail": "0px",
+  "path": "0.5px"
+};
+new L.TileLayer.d3_topoJSON("http://tile.openstreetmap.us/vectiles-highroad/{z}/{x}/{y}.topojson", {
+  class: "road",
+  layerName: "vectile",
+  style: function(d) { return "stroke-width: " + roadSizes[d.properties.kind]; }
+}).addTo(map);
+ 
+ */
+</script>
+</body></html>
