@@ -8,13 +8,13 @@
 
 body { margin: 0; overflow: hidden;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 11px; line-height: 16px;  color:#222;}
+  font-size: 11px; line-height: 16px;  color:#fff; background-color: #222}
 .map { position: relative; overflow: hidden; }
 .info { position: absolute; bottom: 0px; right: 20px; background-color: rgba(255, 255, 255, 0.7) }
 .layer { position: absolute; }
 .tile { position: absolute; width: 256px; height: 256px; }
 .tile path {
- fill: #444;
+ fill: #ddd;
 }
 #slide {
   width:50%;
@@ -23,7 +23,7 @@ body { margin: 0; overflow: hidden;
 </style>
 <body>
 <div id="slider_cont">
-  <input id="slide" type="range" min="1493" max="2010" step="1" value="2011" onchange="updateYear(this.value)"/><span id="yeartext">1493...2010</span>
+  <input id="slide" type="range" min="1800" max="2010" step="1" value="2011" onchange="updateYear(this.value)"/><span id="yeartext">1800...2010</span>
 </div>  
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
@@ -37,7 +37,7 @@ var tile = d3.geo.tile()
     .size([width, height]);
 
 var projection = d3.geo.mercator()
-    .scale((1 << 19) / 2 / Math.PI)
+    .scale((1 << 21) / 2 / Math.PI)
     .translate([-width / 2, -height / 2]); // just temporary
 
 var tileProjection = d3.geo.mercator();
