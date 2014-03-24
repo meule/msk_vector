@@ -12,12 +12,13 @@ body { margin: 0; overflow: hidden;
 .layer { position: absolute; }
 .tile { position: absolute; width: 256px; height: 256px; }
 .tile path {
- fill: #8aa;
+ fill: #444;
 
 }
 
 </style>
 <body>
+<input id="slide" type="range" min="1490" max="2011" step="1" value="2011" onchange="updateYear(this.value)">
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/d3.geo.tile.v0.min.js"></script>
 <script>
@@ -58,6 +59,10 @@ var info = map.append("div")
     .attr("class", "info");
 
 zoomed();
+
+function updateYear(year) {
+  d3.selectAll('path').style('display',function(d){ if (d.properties.year<=year) {return null} else return 'none' ;});  
+}
 
 function zoomed() {
   var tiles = tile
