@@ -91,7 +91,7 @@ if (!window.location.hash) {
 updateYear(2010);
 
 function updateYear(year) {
-  d3.selectAll('path').style('display',function(d){ if (d.properties.year<=year) {return null} else return 'none' ;});  
+  d3.selectAll('path').style('display',function(d){ if (d) if (d.properties.year<=year) {return null} else return 'none' ;});  
   d3.select('#yeartext').text('1800...'+year);
 }
  
