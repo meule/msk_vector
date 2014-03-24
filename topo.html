@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- from http://bl.ocks.org/NelsonMinar/5851197 -->
 <html lang="en"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0"/>
@@ -21,19 +22,22 @@
       margin: 0;
       font-family: Helvetica, Arial, sans-serif; font-size: 12px;
       overflow: hidden;
-      background-color: #f00;
+      background-color: #222;
+      color:#ddd;
   }
   .leaflet-popup-content-wrapper {
       -webkit-border-radius: 5px;
       border-radius: 5px;
   }
    
-  path { stroke-linejoin; round; stroke-linecap: round; fill: #444}
+  path { stroke-linejoin; round; stroke-linecap: round; fill: #ddd; stroke:none;stroke-width:0;}
    
   </style>
    
   </head><body>
- 
+<div id="slider_cont">
+  <input style="width:50%;" id="slide" type="range" min="1800" max="2010" step="1" value="2011" onchange="updateYear(this.value)"/><span id="yeartext">1800...2010</span>
+</div>   
 <div id="map"></div>
  
 <script type="text/javascript">
@@ -77,14 +81,21 @@ L.TileLayer.d3_topoJSON =  L.TileLayer.extend({
 });
 
 // Construct map, center if no location provided
-var map = L.map('map', { minZoom: 9, maxZoom: 16 } );
+var map = L.map('map', { minZoom: 1, maxZoom: 16 } );
  
 var hash = new L.Hash(map);
 if (!window.location.hash) {
-    map.setView([37.6, 55.75], 12);
+    map.setView([37.65, 55.75], 11);
+}
+
+updateYear(2010);
+
+function updateYear(year) {
+  d3.selectAll('path').style('display',function(d){ if (d.properties.year<=year) {return null} else return 'none' ;});  
+  d3.select('#yeartext').text('1800...'+year);
 }
  
-/* 
+/*
 // Make the base map; a raster tile relief map from ESRI
 var esriRelief = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}'
 var basemap = L.tileLayer(esriRelief, {
