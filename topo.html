@@ -77,11 +77,11 @@ L.TileLayer.d3_topoJSON =  L.TileLayer.extend({
 });
 
 // Construct map, center if no location provided
-var map = L.map('map', { minZoom: 7, maxZoom: 15 } );
+var map = L.map('map', { minZoom: 9, maxZoom: 16 } );
  
 var hash = new L.Hash(map);
 if (!window.location.hash) {
-    map.setView([37.6, 55.75], 10);
+    map.setView([37.6, 55.75], 12);
 }
  
 /* 
