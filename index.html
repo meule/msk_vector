@@ -48,7 +48,7 @@ var tilePath = d3.geo.path()
 var zoom = d3.behavior.zoom()
     .scale(projection.scale() * 2 * Math.PI)
     .scaleExtent([1<<12,1<<23])
-    .translate(projection([37.6, 55.7]).map(function(x) { return -x; }))
+    .translate(projection([37.6, 55.8]).map(function(x) { return -x; }))
     .on("zoom", zoomed);
 
 var map = d3.select("body").append("div")
@@ -69,7 +69,7 @@ updateYear(2010);
 
 function updateYear(year) {
   d3.selectAll('path').style('display',function(d){ if (d.properties.year<=year) {return null} else return 'none' ;});  
-  d3.select('#yeartext').text('1493...'+year);
+  d3.select('#yeartext').text('1800...'+year);
 }
 
 function zoomed() {
