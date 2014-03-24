@@ -17,13 +17,13 @@
   \ 
   <style type="text/css">
   html, body { height: 100% }
-  #map { min-height: 100%; }
+  #map { min-height: 100%; background-color: #222;}
   body {
       margin: 0;
       font-family: Helvetica, Arial, sans-serif; font-size: 12px;
       overflow: hidden;
       background-color: #222;
-      color:#ddd;
+
   }
   .leaflet-popup-content-wrapper {
       -webkit-border-radius: 5px;
@@ -36,7 +36,7 @@
    
   </head><body>
 <div id="slider_cont">
-  <input style="width:50%;" id="slide" type="range" min="1800" max="2010" step="1" value="2011" onchange="updateYear(this.value)"/><span id="yeartext">1800...2010</span>
+  <input style="width:50%;color:#ddd;" id="slide" type="range" min="1800" max="2010" step="1" value="2011" onchange="updateYear(this.value)"/><span style="color:#ddd;" id="yeartext">1800...2010</span>
 </div>   
 <div id="map"></div>
  
