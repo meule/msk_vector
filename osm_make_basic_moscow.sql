@@ -35,7 +35,7 @@ ON ST_Intersects(boundary.way,planet_osm_line.way));
 
 CREATE TABLE moscow_green AS
 SELECT osm_id,name,way FROM planet_osm_polygon 
-WHERE (landuse='meadow' OR landuse='grass' OR landuse='forest' OR landuse='park' OR landuse='greenfield') AND osm_id IN
+WHERE (landuse='meadow' OR landuse='grass' OR landuse='forest' OR landuse='park' OR landuse='greenfield' or leisure is not null) AND osm_id IN
 (SELECT DISTINCT planet_osm_polygon.osm_id FROM planet_osm_polygon
 INNER JOIN boundary
 ON ST_Intersects(boundary.way,planet_osm_polygon.way));
