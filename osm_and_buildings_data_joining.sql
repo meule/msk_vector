@@ -70,6 +70,7 @@ inner join data
 on data_with_distance3_plus_address_year.geom4=data.geom4
 where data.year=data_with_distance3_plus_address_year.year;
 
+select *,(housenum_osm=housenum_data) as bool from dwithin1_samehousenum where housenum is not null;
 
 
 
@@ -80,33 +81,4 @@ create table msk_grouped as SELECT bd.year, ST_Union(bd.geom) as geom FROM msk A
 CREATE TABLE msk_grouped2 AS SELECT msk.year,ST_Union(ST_SnapToGrid(msk.geom,0.0001)) as geom FROM msk GROUP BY msk.year;
 
 -- end researching
-
-CREATE TABLE moscow_roads AS
-SELECT osm_id,highway,name,way FROM planet_osm_line
-WHERE highway IS NOT NULL AND name IS NOT NULL AND railway IS NULL AND place IS NULL AND boundary IS NULL AND osm_id IN
-(SELECT DISTINCT planet_osm_line.osm_id FROM planet_osm_line
-INNER JOIN boundary
-ON ST_Intersects(boundary.way,planet_osm_line.way));
-
-CREATE TABLE moscow_water AS
-SELECT osm_id,name,way FROM planet_osm_polygon
-WHERE water IS NOT NULL AND osm_id IN
-(SELECT DISTINCT planet_osm_polygon.osm_id FROM planet_osm_polygon
-INNER JOIN boundary
-ON ST_Intersects(boundary.way,planet_osm_polygon.way));
-
-CREATE TABLE moscow_rivers AS
-SELECT osm_id,name,way FROM planet_osm_line
-WHERE waterway IS NOT NULL AND name IS NOT NULL AND osm_id IN
-(SELECT DISTINCT planet_osm_line.osm_id FROM planet_osm_line
-INNER JOIN boundary
-ON ST_Intersects(boundary.way,planet_osm_line.way));
-
-CREATE TABLE moscow_green AS
-SELECT osm_id,name,way FROM planet_osm_polygon 
-WHERE (landuse='meadow' OR landuse='grass' OR landuse='forest' OR landuse='park' OR landuse='greenfield') AND osm_id IN
-(SELECT DISTINCT planet_osm_polygon.osm_id FROM planet_osm_polygon
-INNER JOIN boundary
-ON ST_Intersects(boundary.way,planet_osm_polygon.way));
-
 

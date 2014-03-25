@@ -1,3 +1,5 @@
+-- TODO ST_Union boundaries, water, green, roads (for zoom<13)
+
 CREATE TABLE moscow_boundary AS
 SELECT way FROM planet_osm_polygon
 WHERE boundary IS NOT NULL AND admin_level='5';
