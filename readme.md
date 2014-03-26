@@ -2,10 +2,12 @@ Vector tiles map server for Moscow buildings
 
 Tilestache + Gunicorn + nginx + Amazon EC2 Ubuntu + Amazon RDS Postgres
 
-2do
+TODO
+
+draw diagram
 
 	server
-		WKB (with MVT?): http://blog.jordogskog.no/tag/twkb/ http://blog.jordogskog.no/2013/04/29/more-twkb/ 
+		WKB (with MVT?): http://blog.jordogskog.no/tag/twkb/ http://blog.jordogskog.no/2013/04/29/more-twkb/ https://github.com/bmount/wkmap
 		Tilestache: Memcache and S3: http://tilestache.org/doc/
 		nginx config: http://www.itopen.it/2012/01/17/serving-your-map-tiles-30-times-faster/
 		simplyfy
