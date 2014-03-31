@@ -108,7 +108,17 @@ function zoomed() {
               .data(json.features)
             .enter().append("path")
              //.attr("style", function(d) { return "stroke-width: " + d.properties.strahler/2 + "px;" })
-              .attr("d", function(d) { return tilePath(d); });
+              .attr("d", function(d) { return tilePath(d); })
+              .style("class",function(d){
+                  if (d.properties.year>1991) return "#21f3f1"
+                  if (d.properties.year>1982) return "#21f321"
+                  if (d.properties.year>1964) return "#f3f121"
+                  if (d.properties.year>1953) return "#ffa349"
+                  if (d.properties.year>1917) return "#f65252"
+                  if (d.properties.year>0) return "#f652f4"
+                  return "#444"
+                }                
+              });
         });
       });
 }
