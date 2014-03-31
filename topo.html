@@ -36,7 +36,7 @@
    
   </head><body>
 <div id="slider_cont">
-  <input style="width:50%;color:#ddd;" id="slide" type="range" min="1800" max="2010" step="1" value="2011" onchange="updateYear(this.value)"/><span style="color:#ddd;" id="yeartext">1800...2010</span>
+  <input style="width:50%;color:#ddd;" id="slide" type="range" min="1800" max="2010" step="1" value="2011" oninput="updateYear(this.value)" onchange="updateYear(this.value)"/><span style="color:#ddd;" id="yeartext">1800...2010</span>
 </div>   
 <div id="map"></div>
  
