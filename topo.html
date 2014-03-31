@@ -114,7 +114,17 @@ new L.geoJson({"type": "LineString","coordinates":[[0,0],[0,0]]}).addTo(map);
 new L.TileLayer.d3_topoJSON("http://54.72.144.192:8001/moscow/{z}/{x}/{y}.topojson", {
   class: "building",
   layerName: "vectile",
-  style: ""
+  style: function(d)
+      {
+          if (d.properties.year>1991) return "fill:#21f3f1"
+          if (d.properties.year>1982) return "fill:#21f321"
+          if (d.properties.year>1964) return "fill:#f3f121"
+          if (d.properties.year>1953) return "fill:#ffa349"
+          if (d.properties.year>1917) return "fill:#f65252"
+          if (d.properties.year>0) return "fill:#f652f4"
+          return "fill:#444"
+      }
+
 }).addTo(map);
 
 
