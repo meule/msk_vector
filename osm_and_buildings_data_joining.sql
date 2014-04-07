@@ -80,5 +80,7 @@ create table msk_grouped as SELECT bd.year, ST_Union(bd.geom) as geom FROM msk A
 
 CREATE TABLE msk_grouped2 AS SELECT msk.year,ST_Union(ST_SnapToGrid(msk.geom,0.0001)) as geom FROM msk GROUP BY msk.year;
 
+CREATE INDEX geom_index ON msk_grouped2 USING gist(geom);
+
 -- end researching
 
